@@ -389,10 +389,22 @@ function getBlockedSlots(day) {
   return blocked;
 }
 
-// Verifica se um slot pode ser selecionado (sem restrição de horário de fechamento)
+// Verifica se um slot pode ser selecionado
 function slotAvailable(day, slot) {
   const blocked = getBlockedSlots(day);
   if (blocked.has(slot)) return false;
+
+  // Bloqueia horários que já passaram no dia atual
+  const now = new Date();
+  const diasSemana = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const hoje = diasSemana[now.getDay()];
+  if (day === hoje) {
+    const [h, m] = slot.split(':').map(Number);
+    const slotMinutes = h * 60 + m;
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+    if (slotMinutes <= nowMinutes) return false;
+  }
+
   return true;
 }
 
