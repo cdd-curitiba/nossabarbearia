@@ -482,7 +482,17 @@ async function loadBookings() {
     if (data.success && data.bookings) {
       data.bookings.forEach(b => {
         if (!bookings[b.day]) bookings[b.day] = {};
-        bookings[b.day][b.slot] = { name: b.name, phone: b.phone, duration: b.duration, service: b.service };
+        // Normaliza o slot — pode vir como "09:00" ou como número do Sheets
+        let slot = String(b.slot).trim();
+        if (!slot.includes(':')) {
+          // Converte número fracionário do Sheets para HH:MM
+          const totalMinutes = Math.round(parseFloat(slot) * 24 * 60);
+          const h = Math.floor(totalMinutes / 60).toString().padStart(2, '0');
+          const m = (totalMinutes % 60).toString().padStart(2, '0');
+          slot = h + ':' + m;
+        }
+        const dur = parseInt(b.duration) || 60;
+        bookings[b.day][slot] = { name: b.name, phone: b.phone, duration: dur, service: b.service };
       });
     }
   } catch (e) {
