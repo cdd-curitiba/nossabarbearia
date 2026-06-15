@@ -9,18 +9,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #2b1e16;
-    --surface: #3a2a1e;
-    --surface-2: #4a3526;
-    --gold: #f3a712;
-    --gold-dim: #b9810f;
-    --text: #faf3e6;
-    --text-dim: #c4b2a0;
-    --success: #8fc78f;
-    --success-bg: #25321f;
-    --danger: #e08a76;
-    --danger-bg: #3a261f;
-    --border: #50392a;
+    --bg: #161412;
+    --surface: #1f1c19;
+    --surface-2: #2a2521;
+    --gold: #c9a35a;
+    --gold-dim: #8a7242;
+    --text: #f3efe9;
+    --text-dim: #a99f93;
+    --success: #6fae6f;
+    --success-bg: #1f2a1f;
+    --danger: #d9665a;
+    --danger-bg: #2a1f1d;
+    --border: #3a342e;
     --radius: 10px;
   }
 
@@ -47,14 +47,25 @@
     margin-bottom: 32px;
   }
 
-  .logo-img {
-    width: 160px;
-    height: auto;
-    margin: 0 auto 12px;
-    position: relative;
-    z-index: 1;
-    display: block;
-    border-radius: var(--radius);
+  .logo-mark {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-mark svg { width: 28px; height: 28px; }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 3px;
+    margin: 0;
+    color: var(--text);
   }
 
   .tagline {
@@ -62,7 +73,7 @@
     font-size: 13px;
     letter-spacing: 4px;
     text-transform: uppercase;
-    margin: 0;
+    margin: 8px 0 0;
     font-weight: 500;
   }
 
@@ -96,7 +107,7 @@
     .days-grid { grid-template-columns: repeat(7, 1fr); }
   }
 
-  .day-btn, .slot-btn {
+  .day-btn, .slot-btn, .service-btn {
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text);
@@ -109,17 +120,37 @@
     text-align: center;
   }
 
-  .day-btn:hover, .slot-btn:hover:not(:disabled) {
+  .day-btn:hover, .slot-btn:hover:not(:disabled), .service-btn:hover {
     border-color: var(--gold-dim);
   }
 
-  .day-btn.active {
+  .day-btn.active, .service-btn.active {
     background: var(--gold);
     color: #1a1611;
     border-color: var(--gold);
     font-weight: 600;
   }
 
+  /* Serviços */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .service-btn {
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .service-name { font-size: 15px; font-weight: 600; }
+  .service-duration { font-size: 12px; color: var(--text-dim); letter-spacing: 1px; }
+  .service-btn.active .service-duration { color: #1a1611; opacity: 0.7; }
+
+  /* Slots */
   .slots-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -146,7 +177,7 @@
     border-color: var(--border);
     color: var(--text-dim);
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.45;
   }
   .slot-btn.taken .slot-status { color: var(--text-dim); }
 
@@ -157,9 +188,7 @@
   }
   .slot-btn.active .slot-status { color: #1a1611; }
 
-  .field {
-    margin-bottom: 14px;
-  }
+  .field { margin-bottom: 14px; }
 
   .field label {
     display: block;
@@ -221,13 +250,17 @@
     border-radius: var(--radius);
     padding: 14px 16px;
     margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     font-size: 14px;
   }
 
   .booking-card .day-name { color: var(--gold); font-weight: 600; }
+
+  .spinner {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    padding: 20px;
+  }
 
   footer {
     text-align: center;
@@ -236,24 +269,31 @@
     margin-top: 40px;
     letter-spacing: 1px;
   }
-
-  .spinner {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 13px;
-    padding: 20px;
-  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <img src="logo.png" alt="Nossa Barbearia - Barba, Cabelo, Bigode" class="logo-img" />
+    <img src="logo.png" alt="Nossa Barbearia" style="width:160px; height:auto; border-radius:12px; display:block; margin:0 auto 12px;" />
     <p class="tagline">Agende seu horário</p>
   </header>
 
   <div id="status-msg" class="status-msg"></div>
+
+  <section>
+    <p class="section-label">Serviço</p>
+    <div class="services-grid" id="services">
+      <button class="service-btn active" data-service="corte-barba" data-duration="60" onclick="selectService(this)">
+        <span class="service-name">Corte + Barba</span>
+        <span class="service-duration">1 hora</span>
+      </button>
+      <button class="service-btn" data-service="corte" data-duration="30" onclick="selectService(this)">
+        <span class="service-name">Corte</span>
+        <span class="service-duration">30 minutos</span>
+      </button>
+    </div>
+  </section>
 
   <section>
     <p class="section-label">Dia da semana</p>
@@ -290,18 +330,24 @@
 </div>
 
 <script>
-// ============================================================
-// CONFIGURAÇÃO: cole aqui a URL do seu Google Apps Script
-// (veja o passo a passo enviado para configurar)
-// ============================================================
 const API_URL = "https://script.google.com/macros/s/AKfycbyc0cJPDqUfnSVzzgoBfAKbvaEYNUBo5wHx4ajIhXbWO9QgmVvitlkt0Or9HcYUYd1iQw/exec";
 
-const DAYS = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
-const SLOTS = ['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00'];
+const DAYS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+
+// Gera horários de 09:00 às 18:30 em intervalos de 30 min
+// O último slot disponível depende da duração do serviço:
+// - Corte (30min): até 18:30 (termina 19:00)
+// - Corte + Barba (60min): até 18:00 (termina 19:00)
+const ALL_SLOTS = [];
+for (let h = 9; h < 19; h++) {
+  ALL_SLOTS.push(h.toString().padStart(2,'0') + ':00');
+  if (h < 19) ALL_SLOTS.push(h.toString().padStart(2,'0') + ':30');
+}
 
 let selectedDay = DAYS[0];
 let selectedSlot = null;
-let bookings = {};
+let selectedDuration = 60; // minutos
+let bookings = {}; // { "Segunda": { "09:00": {name, phone, duration}, ... } }
 
 const daysEl = document.getElementById('days');
 const slotsWrap = document.getElementById('slots-wrap');
@@ -315,8 +361,39 @@ const myBookingsEl = document.getElementById('my-bookings');
 function showStatus(text, type) {
   statusEl.className = 'status-msg ' + type;
   statusEl.textContent = text;
-  statusEl.style.display = 'block';
   setTimeout(() => { statusEl.style.display = 'none'; }, 4000);
+}
+
+function selectService(btn) {
+  document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedDuration = parseInt(btn.dataset.duration);
+  selectedSlot = null;
+  renderSlots();
+}
+
+// Retorna todos os slots bloqueados dado os agendamentos do dia
+function getBlockedSlots(day) {
+  const dayBookings = bookings[day] || {};
+  const blocked = new Set();
+  Object.entries(dayBookings).forEach(([slot, info]) => {
+    blocked.add(slot);
+    // bloqueia os slots seguintes conforme duração
+    const dur = parseInt(info.duration) || 60;
+    const steps = dur / 30;
+    const idx = ALL_SLOTS.indexOf(slot);
+    for (let i = 1; i < steps; i++) {
+      if (idx + i < ALL_SLOTS.length) blocked.add(ALL_SLOTS[idx + i]);
+    }
+  });
+  return blocked;
+}
+
+// Verifica se um slot pode ser selecionado (sem restrição de horário de fechamento)
+function slotAvailable(day, slot) {
+  const blocked = getBlockedSlots(day);
+  if (blocked.has(slot)) return false;
+  return true;
 }
 
 function renderDays() {
@@ -336,14 +413,15 @@ function renderDays() {
 }
 
 function renderSlots() {
-  const dayBookings = bookings[selectedDay] || {};
   const grid = document.createElement('div');
   grid.className = 'slots-grid';
 
-  SLOTS.forEach(slot => {
-    const taken = dayBookings[slot];
+  ALL_SLOTS.forEach(slot => {
+    const available = slotAvailable(selectedDay, slot);
+    const isSelected = slot === selectedSlot;
+
     const btn = document.createElement('button');
-    btn.className = 'slot-btn' + (taken ? ' taken' : (slot === selectedSlot ? ' active' : ''));
+    btn.className = 'slot-btn' + (!available ? ' taken' : (isSelected ? ' active' : ''));
 
     const time = document.createElement('span');
     time.className = 'slot-time';
@@ -352,10 +430,10 @@ function renderSlots() {
 
     const status = document.createElement('span');
     status.className = 'slot-status';
-    status.textContent = taken ? 'Ocupado' : 'Livre';
+    status.textContent = !available ? 'Reservado' : 'Livre';
     btn.appendChild(status);
 
-    if (taken) {
+    if (!available) {
       btn.disabled = true;
     } else {
       btn.onclick = () => {
@@ -372,29 +450,26 @@ function renderSlots() {
 
 function renderMyBookings() {
   const name = nameInput.value.trim().toLowerCase();
-  if (!name) {
-    myBookingsWrap.style.display = 'none';
-    return;
-  }
+  if (!name) { myBookingsWrap.style.display = 'none'; return; }
+
   const mine = [];
   Object.keys(bookings).forEach(day => {
     Object.keys(bookings[day]).forEach(slot => {
       const b = bookings[day][slot];
       if ((b.name || '').trim().toLowerCase() === name) {
-        mine.push({ day, slot });
+        mine.push({ day, slot, service: b.service });
       }
     });
   });
-  if (mine.length === 0) {
-    myBookingsWrap.style.display = 'none';
-    return;
-  }
+
+  if (mine.length === 0) { myBookingsWrap.style.display = 'none'; return; }
   myBookingsWrap.style.display = 'block';
   myBookingsEl.innerHTML = '';
   mine.forEach(b => {
     const card = document.createElement('div');
     card.className = 'booking-card';
-    card.innerHTML = '<span><span class="day-name">' + b.day + '</span> às ' + b.slot + '</span>';
+    card.innerHTML = '<span class="day-name">' + b.day + '</span> às ' + b.slot +
+      (b.service ? ' &mdash; ' + b.service : '');
     myBookingsEl.appendChild(card);
   });
 }
@@ -407,11 +482,11 @@ async function loadBookings() {
     if (data.success && data.bookings) {
       data.bookings.forEach(b => {
         if (!bookings[b.day]) bookings[b.day] = {};
-        bookings[b.day][b.slot] = { name: b.name, phone: b.phone };
+        bookings[b.day][b.slot] = { name: b.name, phone: b.phone, duration: b.duration, service: b.service };
       });
     }
   } catch (e) {
-    showStatus('Não foi possível carregar os horários. Verifique sua conexão.', 'error');
+    showStatus('Não foi possível carregar os horários.', 'error');
   }
   renderSlots();
   renderMyBookings();
@@ -419,14 +494,11 @@ async function loadBookings() {
 
 bookBtn.onclick = async () => {
   const name = nameInput.value.trim();
-  if (!name) {
-    showStatus('Digite seu nome antes de confirmar', 'error');
-    return;
-  }
-  if (!selectedSlot) {
-    showStatus('Escolha um horário disponível', 'error');
-    return;
-  }
+  if (!name) { showStatus('Digite seu nome antes de confirmar', 'error'); return; }
+  if (!selectedSlot) { showStatus('Escolha um horário disponível', 'error'); return; }
+
+  const activeServiceBtn = document.querySelector('.service-btn.active');
+  const serviceName = activeServiceBtn ? activeServiceBtn.querySelector('.service-name').textContent : '';
 
   bookBtn.disabled = true;
   bookBtn.textContent = 'Enviando...';
@@ -439,13 +511,14 @@ bookBtn.onclick = async () => {
         day: selectedDay,
         slot: selectedSlot,
         name: name,
-        phone: phoneInput.value.trim()
+        phone: phoneInput.value.trim(),
+        duration: selectedDuration,
+        service: serviceName
       })
     });
     const data = await res.json();
-
     if (data.success) {
-      showStatus('Agendado para ' + selectedDay + ' às ' + selectedSlot + '!', 'success');
+      showStatus('Agendado! ' + selectedDay + ' às ' + selectedSlot + ' — ' + serviceName, 'success');
       selectedSlot = null;
       await loadBookings();
     } else {
@@ -453,7 +526,7 @@ bookBtn.onclick = async () => {
       await loadBookings();
     }
   } catch (e) {
-    showStatus('Erro ao enviar. Verifique sua conexão e tente novamente.', 'error');
+    showStatus('Erro ao enviar. Verifique sua conexão.', 'error');
   }
 
   bookBtn.disabled = false;
