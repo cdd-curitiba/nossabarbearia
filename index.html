@@ -3,562 +3,196 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Nossa Barbearia - Agendamento</title>
+<title>Nossa Barbearia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #161412;
-    --surface: #1f1c19;
-    --surface-2: #2a2521;
-    --gold: #c9a35a;
-    --gold-dim: #8a7242;
-    --text: #f3efe9;
-    --text-dim: #a99f93;
-    --success: #6fae6f;
-    --success-bg: #1f2a1f;
-    --danger: #d9665a;
-    --danger-bg: #2a1f1d;
-    --border: #3a342e;
-    --radius: 10px;
-  }
-
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    margin: 0;
     font-family: 'Work Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: #0f0e0c;
+    color: #f3efe9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
     -webkit-font-smoothing: antialiased;
   }
 
-  .wrap {
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
+  .top-badge {
+    background: #1f1c19;
+    border: 1px solid #3a342e;
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #c9a35a;
+    margin-bottom: 28px;
+    font-weight: 600;
   }
 
-  header {
+  .logo {
+    width: 140px;
+    height: auto;
+    border-radius: 14px;
+    display: block;
+    margin: 0 auto 24px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 10vw, 72px);
+    letter-spacing: 3px;
     text-align: center;
-    padding: 40px 20px 28px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 32px;
+    line-height: 1;
+    margin-bottom: 8px;
   }
 
-  .logo-mark {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto 16px;
-    border: 1px solid var(--gold-dim);
-    border-radius: 50%;
+  h1 span { color: #c9a35a; }
+
+  .subtitle {
+    text-align: center;
+    color: #a99f93;
+    font-size: 15px;
+    margin-bottom: 40px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    background: #1a1815;
+    border: 1px solid #2e2a25;
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-decoration: none;
+    color: #f3efe9;
+    transition: transform 0.18s, border-color 0.18s, background 0.18s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+  }
+
+  .card.whats { border-color: #1a3d28; }
+  .card.whats:hover { background: #162d1e; border-color: #25D366; }
+
+  .card.agenda { border-color: #3a2e1a; }
+  .card.agenda:hover { background: #2a2010; border-color: #c9a35a; }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .logo-mark svg { width: 28px; height: 28px; }
+  .card.whats .card-icon { background: #25D36620; }
+  .card.agenda .card-icon { background: #c9a35a20; }
 
-  h1 {
+  .card-icon svg { width: 24px; height: 24px; }
+
+  .card-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
-    letter-spacing: 3px;
-    margin: 0;
-    color: var(--text);
-  }
-
-  .tagline {
-    color: var(--gold);
-    font-size: 13px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin: 8px 0 0;
-    font-weight: 500;
-  }
-
-  section { margin-bottom: 28px; }
-
-  .section-label {
-    font-size: 12px;
+    font-size: 26px;
     letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin: 0 0 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    line-height: 1;
   }
 
-  .section-label::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .card.whats .card-title { color: #25D366; }
+  .card.agenda .card-title { color: #c9a35a; }
 
-  .days-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
-  @media (min-width: 480px) {
-    .days-grid { grid-template-columns: repeat(7, 1fr); }
-  }
-
-  .day-btn, .slot-btn, .service-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: var(--radius);
-    padding: 12px 4px;
-    font-family: inherit;
+  .card-desc {
     font-size: 13px;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    text-align: center;
+    color: #a99f93;
+    line-height: 1.4;
   }
 
-  .day-btn:hover, .slot-btn:hover:not(:disabled), .service-btn:hover {
-    border-color: var(--gold-dim);
-  }
-
-  .day-btn.active, .service-btn.active {
-    background: var(--gold);
-    color: #1a1611;
-    border-color: var(--gold);
-    font-weight: 600;
-  }
-
-  /* Serviços */
-  .services-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .service-btn {
-    padding: 16px 8px;
+  .info {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .service-name { font-size: 15px; font-weight: 600; }
-  .service-duration { font-size: 12px; color: var(--text-dim); letter-spacing: 1px; }
-  .service-btn.active .service-duration { color: #1a1611; opacity: 0.7; }
-
-  /* Slots */
-  .slots-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-  }
-
-  @media (min-width: 480px) {
-    .slots-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .slot-btn {
-    padding: 14px 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    width: 100%;
+    max-width: 480px;
     align-items: center;
   }
 
-  .slot-time { font-size: 16px; font-weight: 600; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; }
-  .slot-status { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--success); }
-
-  .slot-btn.taken {
-    background: var(--surface);
-    border-color: var(--border);
-    color: var(--text-dim);
-    cursor: not-allowed;
-    opacity: 0.45;
-  }
-  .slot-btn.taken .slot-status { color: var(--text-dim); }
-
-  .slot-btn.active {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: #1a1611;
-  }
-  .slot-btn.active .slot-status { color: #1a1611; }
-
-  .field { margin-bottom: 14px; }
-
-  .field label {
-    display: block;
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .field input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    padding: 13px 14px;
-    font-family: inherit;
-    font-size: 15px;
-  }
-
-  .field input:focus {
-    outline: none;
-    border-color: var(--gold);
-  }
-
-  .btn-primary {
-    width: 100%;
-    background: var(--gold);
-    color: #1a1611;
-    border: none;
-    border-radius: var(--radius);
-    padding: 16px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 3px;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-
-  .btn-primary:hover { opacity: 0.9; }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  .status-msg {
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    font-size: 14px;
-    margin-bottom: 16px;
-    display: none;
-    text-align: center;
-  }
-
-  .status-msg.success { display: block; background: var(--success-bg); color: var(--success); }
-  .status-msg.error { display: block; background: var(--danger-bg); color: var(--danger); }
-
-  .my-bookings .booking-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-
-  .booking-card .day-name { color: var(--gold); font-weight: 600; }
-
-  .spinner {
-    text-align: center;
-    color: var(--text-dim);
+  .info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 13px;
-    padding: 20px;
+    color: #a99f93;
+    justify-content: center;
+    text-align: center;
   }
 
-  footer {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 12px;
-    margin-top: 40px;
-    letter-spacing: 1px;
-  }
+  .info-row svg { flex-shrink: 0; }
+  .info-row strong { color: #f3efe9; }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <img src="logo.png" alt="Nossa Barbearia" style="width:160px; height:auto; border-radius:12px; display:block; margin:0 auto 12px;" />
-    <p class="tagline">Agende seu horário</p>
-  </header>
+  <div class="top-badge">Barba &bull; Cabelo &bull; Bigode</div>
 
-  <div id="status-msg" class="status-msg"></div>
+  <img src="logo.png" alt="Nossa Barbearia" class="logo" />
 
-  <section>
-    <p class="section-label">Serviço</p>
-    <div class="services-grid" id="services">
-      <button class="service-btn active" data-service="corte-barba" data-duration="60" onclick="selectService(this)">
-        <span class="service-name">Corte + Barba</span>
-        <span class="service-duration">1 hora</span>
-      </button>
-      <button class="service-btn" data-service="corte" data-duration="30" onclick="selectService(this)">
-        <span class="service-name">Corte</span>
-        <span class="service-duration">30 minutos</span>
-      </button>
+  <h1>Nossa <span>Barbearia</span></h1>
+  <p class="subtitle">Selecione uma opção abaixo</p>
+
+  <div class="cards">
+    <a class="card whats" href="https://wa.me/5592992282621" target="_blank">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="#25D366">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+      </div>
+      <span class="card-title">WhatsApp</span>
+      <span class="card-desc">Fale com a gente agora mesmo</span>
+    </a>
+
+    <a class="card agenda" href="agendamento.html">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c9a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <span class="card-title">Agendar</span>
+      <span class="card-desc">Reserve seu horário online</span>
+    </a>
+  </div>
+
+  <div class="info">
+    <div class="info-row">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span><strong>Seg a Sáb</strong> — 09h às 18h30</span>
     </div>
-  </section>
-
-  <section>
-    <p class="section-label">Dia da semana</p>
-    <div class="days-grid" id="days"></div>
-  </section>
-
-  <section>
-    <p class="section-label">Horário</p>
-    <div id="slots-wrap">
-      <div class="spinner">Carregando horários...</div>
+    <div class="info-row">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a35a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      <span>Rua Jorge Guimarães de Camargo, 526 — Cruzeiro</span>
     </div>
-  </section>
+  </div>
 
-  <section>
-    <p class="section-label">Seus dados</p>
-    <div class="field">
-      <label for="client-name">Nome</label>
-      <input type="text" id="client-name" placeholder="Seu nome completo" />
-    </div>
-    <div class="field">
-      <label for="client-phone">Telefone (opcional)</label>
-      <input type="tel" id="client-phone" placeholder="(00) 00000-0000" />
-    </div>
-  </section>
-
-  <button class="btn-primary" id="book-btn">Confirmar</button>
-
-  <section class="my-bookings" id="my-bookings-wrap" style="display:none; margin-top: 32px;">
-    <p class="section-label">Meus agendamentos</p>
-    <div id="my-bookings"></div>
-  </section>
-
-  <footer>Nossa Barbearia &middot; Agendamento online</footer>
-</div>
-
-<script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwAhBmOSHGuFZrpPTTBnxJ2AUT-FM8bPJsNqo7IbRlNYXahjF3BO0cDDOsRQvox6XSyqA/exec";
-
-const DAYS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-
-// Gera horários de 09:00 às 18:30 em intervalos de 30 min
-// O último slot disponível depende da duração do serviço:
-// - Corte (30min): até 18:30 (termina 19:00)
-// - Corte + Barba (60min): até 18:00 (termina 19:00)
-const ALL_SLOTS = [];
-for (let h = 9; h < 19; h++) {
-  ALL_SLOTS.push(h.toString().padStart(2,'0') + ':00');
-  if (h < 19) ALL_SLOTS.push(h.toString().padStart(2,'0') + ':30');
-}
-
-let selectedDay = DAYS[0];
-let selectedSlot = null;
-let selectedDuration = 60; // minutos
-let bookings = {}; // { "Segunda": { "09:00": {name, phone, duration}, ... } }
-
-const daysEl = document.getElementById('days');
-const slotsWrap = document.getElementById('slots-wrap');
-const bookBtn = document.getElementById('book-btn');
-const statusEl = document.getElementById('status-msg');
-const nameInput = document.getElementById('client-name');
-const phoneInput = document.getElementById('client-phone');
-const myBookingsWrap = document.getElementById('my-bookings-wrap');
-const myBookingsEl = document.getElementById('my-bookings');
-
-function showStatus(text, type) {
-  statusEl.className = 'status-msg ' + type;
-  statusEl.textContent = text;
-  setTimeout(() => { statusEl.style.display = 'none'; }, 4000);
-}
-
-function selectService(btn) {
-  document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  selectedDuration = parseInt(btn.dataset.duration);
-  selectedSlot = null;
-  renderSlots();
-}
-
-// Retorna todos os slots bloqueados dado os agendamentos do dia
-function getBlockedSlots(day) {
-  const dayBookings = bookings[day] || {};
-  const blocked = new Set();
-  Object.entries(dayBookings).forEach(([slot, info]) => {
-    blocked.add(slot);
-    // bloqueia os slots seguintes conforme duração
-    const dur = parseInt(info.duration) || 60;
-    const steps = dur / 30;
-    const idx = ALL_SLOTS.indexOf(slot);
-    for (let i = 1; i < steps; i++) {
-      if (idx + i < ALL_SLOTS.length) blocked.add(ALL_SLOTS[idx + i]);
-    }
-  });
-  return blocked;
-}
-
-// Verifica se um slot pode ser selecionado
-function slotAvailable(day, slot) {
-  const blocked = getBlockedSlots(day);
-  if (blocked.has(slot)) return false;
-
-  // Bloqueia horários que já passaram no dia atual
-  const now = new Date();
-  const diasSemana = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-  const hoje = diasSemana[now.getDay()];
-  if (day === hoje) {
-    const [h, m] = slot.split(':').map(Number);
-    const slotMinutes = h * 60 + m;
-    const nowMinutes = now.getHours() * 60 + now.getMinutes();
-    if (slotMinutes <= nowMinutes) return false;
-  }
-
-  return true;
-}
-
-function renderDays() {
-  daysEl.innerHTML = '';
-  DAYS.forEach(day => {
-    const btn = document.createElement('button');
-    btn.className = 'day-btn' + (day === selectedDay ? ' active' : '');
-    btn.textContent = day.slice(0, 3);
-    btn.onclick = () => {
-      selectedDay = day;
-      selectedSlot = null;
-      renderDays();
-      renderSlots();
-    };
-    daysEl.appendChild(btn);
-  });
-}
-
-function renderSlots() {
-  const grid = document.createElement('div');
-  grid.className = 'slots-grid';
-
-  ALL_SLOTS.forEach(slot => {
-    const available = slotAvailable(selectedDay, slot);
-    const isSelected = slot === selectedSlot;
-
-    const btn = document.createElement('button');
-    btn.className = 'slot-btn' + (!available ? ' taken' : (isSelected ? ' active' : ''));
-
-    const time = document.createElement('span');
-    time.className = 'slot-time';
-    time.textContent = slot;
-    btn.appendChild(time);
-
-    const status = document.createElement('span');
-    status.className = 'slot-status';
-    status.textContent = !available ? 'Reservado' : 'Livre';
-    btn.appendChild(status);
-
-    if (!available) {
-      btn.disabled = true;
-    } else {
-      btn.onclick = () => {
-        selectedSlot = slot;
-        renderSlots();
-      };
-    }
-    grid.appendChild(btn);
-  });
-
-  slotsWrap.innerHTML = '';
-  slotsWrap.appendChild(grid);
-}
-
-function renderMyBookings() {
-  const name = nameInput.value.trim().toLowerCase();
-  if (!name) { myBookingsWrap.style.display = 'none'; return; }
-
-  const mine = [];
-  Object.keys(bookings).forEach(day => {
-    Object.keys(bookings[day]).forEach(slot => {
-      const b = bookings[day][slot];
-      if ((b.name || '').trim().toLowerCase() === name) {
-        mine.push({ day, slot, service: b.service });
-      }
-    });
-  });
-
-  if (mine.length === 0) { myBookingsWrap.style.display = 'none'; return; }
-  myBookingsWrap.style.display = 'block';
-  myBookingsEl.innerHTML = '';
-  mine.forEach(b => {
-    const card = document.createElement('div');
-    card.className = 'booking-card';
-    card.innerHTML = '<span class="day-name">' + b.day + '</span> às ' + b.slot +
-      (b.service ? ' &mdash; ' + b.service : '');
-    myBookingsEl.appendChild(card);
-  });
-}
-
-async function loadBookings() {
-  try {
-    const res = await fetch(API_URL + '?action=list');
-    const data = await res.json();
-    bookings = {};
-    if (data.success && data.bookings) {
-      data.bookings.forEach(b => {
-        if (!bookings[b.day]) bookings[b.day] = {};
-        // Normaliza o slot — pode vir como "09:00" ou como número do Sheets
-        let slot = String(b.slot).trim();
-        if (!slot.includes(':')) {
-          // Converte número fracionário do Sheets para HH:MM
-          const totalMinutes = Math.round(parseFloat(slot) * 24 * 60);
-          const h = Math.floor(totalMinutes / 60).toString().padStart(2, '0');
-          const m = (totalMinutes % 60).toString().padStart(2, '0');
-          slot = h + ':' + m;
-        }
-        const dur = parseInt(b.duration) || 60;
-        bookings[b.day][slot] = { name: b.name, phone: b.phone, duration: dur, service: b.service };
-      });
-    }
-  } catch (e) {
-    showStatus('Não foi possível carregar os horários.', 'error');
-  }
-  renderSlots();
-  renderMyBookings();
-}
-
-bookBtn.onclick = async () => {
-  const name = nameInput.value.trim();
-  if (!name) { showStatus('Digite seu nome antes de confirmar', 'error'); return; }
-  if (!selectedSlot) { showStatus('Escolha um horário disponível', 'error'); return; }
-
-  const activeServiceBtn = document.querySelector('.service-btn.active');
-  const serviceName = activeServiceBtn ? activeServiceBtn.querySelector('.service-name').textContent : '';
-
-  bookBtn.disabled = true;
-  bookBtn.textContent = 'Enviando...';
-
-  try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: 'book',
-        day: selectedDay,
-        slot: selectedSlot,
-        name: name,
-        phone: phoneInput.value.trim(),
-        duration: selectedDuration,
-        service: serviceName
-      })
-    });
-    const data = await res.json();
-    if (data.success) {
-      showStatus('Agendado! ' + selectedDay + ' às ' + selectedSlot + ' — ' + serviceName, 'success');
-      selectedSlot = null;
-      await loadBookings();
-    } else {
-      showStatus(data.error || 'Não foi possível agendar', 'error');
-      await loadBookings();
-    }
-  } catch (e) {
-    showStatus('Erro ao enviar. Verifique sua conexão.', 'error');
-  }
-
-  bookBtn.disabled = false;
-  bookBtn.textContent = 'Confirmar';
-};
-
-nameInput.oninput = renderMyBookings;
-
-renderDays();
-loadBookings();
-</script>
 </body>
 </html>
