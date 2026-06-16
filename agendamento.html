@@ -340,7 +340,7 @@
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwAhBmOSHGuFZrpPTTBnxJ2AUT-FM8bPJsNqo7IbRlNYXahjF3BO0cDDOsRQvox6XSyqA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbx1FLZV67l7DmuiaVjvOUK-vPv0qhDWTyv4QJFr3HKpjrx2oN8atHzQZ_5EDdXTMMfULA/exec";
 
 const DAYS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 
@@ -526,18 +526,16 @@ bookBtn.onclick = async () => {
   bookBtn.textContent = 'Enviando...';
 
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        action: 'book',
-        day: selectedDay,
-        slot: selectedSlot,
-        name: name,
-        phone: phoneInput.value.trim(),
-        duration: selectedDuration,
-        service: serviceName
-      })
+    const params = new URLSearchParams({
+      action: 'book',
+      day: selectedDay,
+      slot: selectedSlot,
+      name: name,
+      phone: phoneInput.value.trim(),
+      duration: selectedDuration,
+      service: serviceName
     });
+    const res = await fetch(API_URL + '?' + params.toString());
     const data = await res.json();
     if (data.success) {
       showStatus('Agendado! ' + selectedDay + ' às ' + selectedSlot + ' — ' + serviceName, 'success');
